@@ -1,9 +1,10 @@
-import express, { Request, Response } from 'express'
+import 'dotenv/config'
+import express from 'express'
+import { router } from './routes/index.js'
 
 const server = express()
 
-server.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server')
-})
+server.use(express.json())
+server.use(router)
 
 export { server }
