@@ -10,7 +10,7 @@ interface City {
 //   filter?: string
 // }
 
-const CitiesSchema: yup.ObjectSchema<City> = yup.object({
+const CitySchema: yup.ObjectSchema<City> = yup.object({
   name: yup.string().required().min(3),
   estado: yup.string().required().min(3),
 })
@@ -18,12 +18,12 @@ const CitiesSchema: yup.ObjectSchema<City> = yup.object({
 //   filter: yup.string().min(3),
 // })
 
-export const createValidation = validation(() => ({ body: CitiesSchema }))
-// export const createValidation = validation('body', CitiesSchema)
+export const createValidation = validation(() => ({ body: CitySchema }))
+// export const createValidation = validation('body', CitySchema)
 // export const createValidationFilter = validation('query', FilterSchema)
 
 export const create = async (req: Request<{}, {}, City>, res: Response) => {
   console.log(req.body)
 
-  res.send('Create!')
+  res.send('Not Implements !')
 }

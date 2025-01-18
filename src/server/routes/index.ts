@@ -8,10 +8,16 @@ router.get('/', (_, res: Response) => {
 })
 
 router.post(
-  '/cities',
+  '/city',
   CitiesController.createValidation,
   // CitiesController.createValidationFilter,
   CitiesController.create,
+)
+router.get(
+  '/cities',
+  CitiesController.getAllValidation,
+  // CitiesController.createValidationFilter,
+  CitiesController.getAll,
 )
 
 export { router }
