@@ -9,7 +9,8 @@ router.get('/', (_, res: Response) => {
 
 router.post(
   '/cities',
-  CitiesController.createBodyValidator,
+  CitiesController.createValidation,
+  // CitiesController.createValidationFilter,
   CitiesController.create,
 )
 
