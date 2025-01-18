@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Request, RequestHandler, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
 
@@ -12,28 +12,31 @@ const bodyValidation: yup.ObjectSchema<City> = yup.object({
   estado: yup.string().required().min(3),
 })
 
-export const create = async (req: Request<{}, {}, City>, res: Response) => {
-  let validateData: City | undefined
+export const createBodyValidator: RequestHandler = async (req, res, next) => {
   try {
-    validateData = await bodyValidation.validate(req.body, {
+    await bodyValidation.validate(req.body, {
       abortEarly: false,
     })
-    console.log(validateData)
-
-    res.send('Create!')
-  } catch (error) {
-    const yupError = error as yup.ValidationError
-    const validationErrors: Record<string, string> = {}
+    next()
+  } catch (err) {
+    const yupError = err as yup.ValidationError
+    const errors: Record<string, string> = {}
 
     yupError.inner.forEach((error) => {
       if (!error.path) return
-      validationErrors[error.path] = error.message
+      errors[error.path] = error.message
     })
 
     res.status(StatusCodes.BAD_REQUEST).json({
       errors: {
-        default: validationErrors,
+        default: errors,
       },
     })
   }
+}
+
+export const create = async (req: Request<{}, {}, City>, res: Response) => {
+  console.log(req.body)
+
+  res.send('Create!')
 }
