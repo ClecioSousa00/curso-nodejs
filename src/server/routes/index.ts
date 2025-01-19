@@ -20,4 +20,22 @@ router.get(
   CitiesController.getAll,
 )
 
+router.get(
+  '/city/:id',
+  CitiesController.getByIdValidation,
+  CitiesController.getById,
+)
+
+router.put(
+  '/city/:id',
+  CitiesController.updateByIdValidation,
+  CitiesController.updateById,
+)
+
+router.delete(
+  '/city/:id',
+  CitiesController.deleteByIdValidation,
+  CitiesController.deleteById,
+)
+
 export { router }
