@@ -28,7 +28,8 @@ router.get(
 
 router.put(
   '/city/:id',
-  CitiesController.updateByIdValidation,
+  CitiesController.updateByIdValidationBody,
+  CitiesController.updateByIdValidationParams,
   CitiesController.updateById,
 )
 

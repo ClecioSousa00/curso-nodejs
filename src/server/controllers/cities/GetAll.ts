@@ -14,8 +14,8 @@ const QueryPropsSchema: yup.ObjectSchema<QueryProps> = yup.object({
   filter: yup.string(),
 })
 
-export const getAllValidation = validation(() => ({ query: QueryPropsSchema }))
-
+// export const getAllValidation = validation(() => ({ query: QueryPropsSchema }))
+export const getAllValidation = validation('query', QueryPropsSchema)
 export const getAll = async (
   req: Request<{}, {}, {}, QueryProps>,
   res: Response,
