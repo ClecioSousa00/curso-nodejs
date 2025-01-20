@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import * as yup from 'yup'
 import { validation } from '../../shared/middlewares'
+import { StatusCodes } from 'http-status-codes'
 
 interface ParamProps {
   id?: number
@@ -35,5 +36,5 @@ export const updateById = async (
   console.log(req.params)
   console.log(req.body)
 
-  res.send('Not Implements !')
+  res.status(StatusCodes.NO_CONTENT).send()
 }

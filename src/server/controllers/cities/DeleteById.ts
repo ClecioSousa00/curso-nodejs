@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import * as yup from 'yup'
 import { validation } from '../../shared/middlewares'
+import { StatusCodes } from 'http-status-codes'
 
 interface ParamProps {
   id?: number
@@ -17,5 +18,5 @@ export const deleteByIdValidation = validation('params', ParamsPropsSchema)
 export const deleteById = async (req: Request<ParamProps>, res: Response) => {
   console.log(req.params)
 
-  res.send('Not Implements !')
+  res.status(StatusCodes.NO_CONTENT).send()
 }

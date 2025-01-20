@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import * as yup from 'yup'
 import { validation } from '../../shared/middlewares'
+import { StatusCodes } from 'http-status-codes'
 
 interface QueryProps {
   page?: number
@@ -21,6 +22,13 @@ export const getAll = async (
   res: Response,
 ) => {
   console.log(req.query)
+  res.setHeader('access-control-expose-headers', 'x-total-count')
+  res.setHeader('x-total-count', 1)
 
-  res.send('Not Implements !')
+  res.status(StatusCodes.OK).json([
+    {
+      id: 1,
+      name: 'patos',
+    },
+  ])
 }
