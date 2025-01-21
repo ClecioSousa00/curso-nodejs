@@ -2,21 +2,20 @@ import { Request, Response } from 'express'
 import * as yup from 'yup'
 import { validation } from '../../shared/middlewares'
 import { StatusCodes } from 'http-status-codes'
+import { City } from '../../database/models'
 
 interface ParamProps {
   id?: number
 }
 
-interface BodyProps {
-  nome: string
-}
+interface BodyProps extends Omit<City, 'id'> {}
 
 const ParamsPropsSchema: yup.ObjectSchema<ParamProps> = yup.object({
   id: yup.number().integer().required().moreThan(0),
 })
 
 const BodyPropsSchema: yup.ObjectSchema<BodyProps> = yup.object({
-  nome: yup.string().required().min(3),
+  name: yup.string().required().min(3),
 })
 
 // export const updateByIdValidation = validation(() => ({

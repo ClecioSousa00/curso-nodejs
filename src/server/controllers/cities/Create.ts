@@ -2,15 +2,14 @@ import { Request, Response } from 'express'
 import * as yup from 'yup'
 import { validation } from '../../shared/middlewares'
 import { StatusCodes } from 'http-status-codes'
+import { City } from '../../database/models'
 
-interface City {
-  name: string
-}
+interface BodyProps extends Omit<City, 'id'> {}
 // interface Filter {
 //   filter?: string
 // }
 
-const CitySchema: yup.ObjectSchema<City> = yup.object({
+const CitySchema: yup.ObjectSchema<BodyProps> = yup.object({
   name: yup.string().required().min(3),
 })
 // const FilterSchema: yup.ObjectSchema<Filter> = yup.object({
