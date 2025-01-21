@@ -6,7 +6,7 @@ describe('Cities - GetAll', () => {
 
     expect(createCity.statusCode).toEqual(StatusCodes.CREATED)
 
-    const getAllCities = await testServer.get(`cities`).send()
+    const getAllCities = await testServer.get(`/cities`).send()
 
     expect(Number(getAllCities.header['x-total-count'])).toBeGreaterThan(0)
     expect(getAllCities.statusCode).toEqual(StatusCodes.OK)

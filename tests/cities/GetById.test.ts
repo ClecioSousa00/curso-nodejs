@@ -6,7 +6,7 @@ describe('Cities - GetById', () => {
 
     expect(res.statusCode).toEqual(StatusCodes.CREATED)
 
-    const getCityById = await testServer.get(`city/${res.body}`).send()
+    const getCityById = await testServer.get(`/city/${res.body}`).send()
 
     expect(getCityById.statusCode).toEqual(StatusCodes.OK)
     expect(getCityById.body).toHaveProperty('name')
