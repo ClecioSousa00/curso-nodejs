@@ -1,11 +1,17 @@
 import { Knex } from 'knex'
 import { ETableName } from '../ETableNames'
 
+const MAX_NAME_CITY = 150
+
 export async function up(knex: Knex) {
   return knex.schema
     .createTable(ETableName.cidade, (table) => {
       table.bigIncrements('id').primary().index()
-      table.string('name', 150).index().notNullable()
+      table
+        .string('name', MAX_NAME_CITY)
+        .checkLength('<=', MAX_NAME_CITY)
+        .index()
+        .notNullable()
       table.comment('Tabela para criar cidade')
     })
     .then(() => {

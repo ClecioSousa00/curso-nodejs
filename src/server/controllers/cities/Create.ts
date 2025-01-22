@@ -3,6 +3,7 @@ import * as yup from 'yup'
 import { validation } from '../../shared/middlewares'
 import { StatusCodes } from 'http-status-codes'
 import { City } from '../../database/models'
+import { CitiesProvider } from '../../database/providers/cities'
 
 interface BodyProps extends Omit<City, 'id'> {}
 // interface Filter {
@@ -10,7 +11,7 @@ interface BodyProps extends Omit<City, 'id'> {}
 // }
 
 const CitySchema: yup.ObjectSchema<BodyProps> = yup.object({
-  name: yup.string().required().min(3),
+  name: yup.string().required().min(3).max(150),
 })
 // const FilterSchema: yup.ObjectSchema<Filter> = yup.object({
 //   filter: yup.string().min(3),
@@ -23,5 +24,15 @@ export const createValidation = validation('body', CitySchema)
 export const create = async (req: Request<{}, {}, City>, res: Response) => {
   console.log(req.body)
 
-  res.status(StatusCodes.CREATED).send('Not Implements !')
+  const result = await CitiesProvider.create(req.body)
+
+  if (result instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: {
+        default: result.message,
+      },
+    })
+  }
+
+  res.status(StatusCodes.CREATED).json(result)
 }
