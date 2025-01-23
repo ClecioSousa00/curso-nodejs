@@ -9,7 +9,9 @@ export const getById = async (id: number): Promise<City | Error> => {
       .where('id', '=', id)
       .first()
 
-    if (result > 0) return result
+    console.log('result', result)
+
+    if (result) return result
 
     return new Error('Registro não encontrado')
   } catch (error) {

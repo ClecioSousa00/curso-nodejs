@@ -27,11 +27,12 @@ export const create = async (req: Request<{}, {}, City>, res: Response) => {
   const result = await CitiesProvider.create(req.body)
 
   if (result instanceof Error) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       errors: {
         default: result.message,
       },
     })
+    return
   }
 
   res.status(StatusCodes.CREATED).json(result)
