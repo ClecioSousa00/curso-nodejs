@@ -1,5 +1,5 @@
 import { Response, Router } from 'express'
-import { CitiesController } from '../controllers'
+import { CitiesController, PeoplesController } from '../controllers'
 
 const router = Router()
 
@@ -37,6 +37,38 @@ router.delete(
   '/city/:id',
   CitiesController.deleteByIdValidation,
   CitiesController.deleteById,
+)
+
+router.post(
+  '/people',
+  PeoplesController.createValidation,
+  // PeoplesController.createValidationFilter,
+  PeoplesController.create,
+)
+router.get(
+  '/peoples',
+  PeoplesController.getAllValidation,
+  // PeoplesController.createValidationFilter,
+  PeoplesController.getAll,
+)
+
+router.get(
+  '/people/:id',
+  PeoplesController.getByIdValidation,
+  PeoplesController.getById,
+)
+
+router.put(
+  '/people/:id',
+  PeoplesController.updateByIdValidationBody,
+  PeoplesController.updateByIdValidationParams,
+  PeoplesController.updateById,
+)
+
+router.delete(
+  '/people/:id',
+  PeoplesController.deleteByIdValidation,
+  PeoplesController.deleteById,
 )
 
 export { router }
