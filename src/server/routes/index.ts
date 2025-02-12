@@ -76,5 +76,6 @@ router.delete(
 )
 
 router.post('/signup', UsersController.createValidation, UsersController.create)
+router.post('/signIn', UsersController.signInValidation, UsersController.signIn)
 
 export { router }

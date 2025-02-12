@@ -5,32 +5,42 @@ import { StatusCodes } from 'http-status-codes'
 import { User } from '../../database/models'
 import { UsersProvider } from '../../database/providers/users'
 
-interface BodyProps extends Omit<User, 'id'> {}
+interface BodyProps extends Omit<User, 'id' | 'name'> {}
 
 const UserSchema: yup.ObjectSchema<BodyProps> = yup.object({
-  name: yup.string().required().min(3),
   email: yup.string().email().required().min(5),
   password: yup.string().required().min(6),
 })
 
-export const createValidation = validation('body', UserSchema)
+export const signInValidation = validation('body', UserSchema)
 
-export const create = async (
+export const signIn = async (
   req: Request<{}, {}, BodyProps>,
   res: Response,
 ) => {
   console.log(req.body)
 
-  const result = await UsersProvider.create(req.body)
+  const { email, password } = req.body
+
+  const result = await UsersProvider.getByEmail(email)
 
   if (result instanceof Error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    res.status(StatusCodes.UNAUTHORIZED).json({
       errors: {
-        default: result.message,
+        default: 'Email ou senha são inválidos',
       },
     })
     return
   }
 
-  res.status(StatusCodes.CREATED).json(result)
+  if (password !== result.password) {
+    res.status(StatusCodes.UNAUTHORIZED).json({
+      errors: {
+        default: 'Email ou senha são inválidos',
+      },
+    })
+    return
+  }
+
+  res.status(StatusCodes.OK).json({ accessToken: 'teste.teste.teste' })
 }
