@@ -4,6 +4,7 @@ import { validation } from '../../shared/middlewares'
 import { StatusCodes } from 'http-status-codes'
 import { User } from '../../database/models'
 import { UsersProvider } from '../../database/providers/users'
+import { PasswordCrypto } from '../../shared/services/PasswordCrypto'
 
 interface BodyProps extends Omit<User, 'id' | 'name'> {}
 
@@ -33,7 +34,11 @@ export const signIn = async (
     return
   }
 
-  if (password !== result.password) {
+  const passwordMatch = await PasswordCrypto.verifyPassword(
+    password,
+    result.password,
+  )
+  if (!passwordMatch) {
     res.status(StatusCodes.UNAUTHORIZED).json({
       errors: {
         default: 'Email ou senha são inválidos',
