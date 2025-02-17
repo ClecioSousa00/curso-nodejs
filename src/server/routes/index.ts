@@ -4,6 +4,7 @@ import {
   PeoplesController,
   UsersController,
 } from '../controllers'
+import { ensureAuthenticated } from '../shared/middlewares'
 
 const router = Router()
 
@@ -13,12 +14,14 @@ router.get('/', (_, res: Response) => {
 
 router.post(
   '/city',
+  ensureAuthenticated,
   CitiesController.createValidation,
   // CitiesController.createValidationFilter,
   CitiesController.create,
 )
 router.get(
   '/cities',
+  ensureAuthenticated,
   CitiesController.getAllValidation,
   // CitiesController.createValidationFilter,
   CitiesController.getAll,
@@ -26,12 +29,14 @@ router.get(
 
 router.get(
   '/city/:id',
+  ensureAuthenticated,
   CitiesController.getByIdValidation,
   CitiesController.getById,
 )
 
 router.put(
   '/city/:id',
+  ensureAuthenticated,
   CitiesController.updateByIdValidationBody,
   CitiesController.updateByIdValidationParams,
   CitiesController.updateById,
@@ -39,18 +44,21 @@ router.put(
 
 router.delete(
   '/city/:id',
+  ensureAuthenticated,
   CitiesController.deleteByIdValidation,
   CitiesController.deleteById,
 )
 
 router.post(
   '/people',
+  ensureAuthenticated,
   PeoplesController.createValidation,
   // PeoplesController.createValidationFilter,
   PeoplesController.create,
 )
 router.get(
   '/peoples',
+  ensureAuthenticated,
   PeoplesController.getAllValidation,
   // PeoplesController.createValidationFilter,
   PeoplesController.getAll,
@@ -58,12 +66,14 @@ router.get(
 
 router.get(
   '/people/:id',
+  ensureAuthenticated,
   PeoplesController.getByIdValidation,
   PeoplesController.getById,
 )
 
 router.put(
   '/people/:id',
+  ensureAuthenticated,
   PeoplesController.updateByIdValidationBody,
   PeoplesController.updateByIdValidationParams,
   PeoplesController.updateById,
@@ -71,6 +81,7 @@ router.put(
 
 router.delete(
   '/people/:id',
+  ensureAuthenticated,
   PeoplesController.deleteByIdValidation,
   PeoplesController.deleteById,
 )
