@@ -5,6 +5,7 @@ import { StatusCodes } from 'http-status-codes'
 import { User } from '../../database/models'
 import { UsersProvider } from '../../database/providers/users'
 import { PasswordCrypto } from '../../shared/services/PasswordCrypto'
+import { JWTService } from '../../shared/services'
 
 interface BodyProps extends Omit<User, 'id' | 'name'> {}
 
@@ -23,9 +24,9 @@ export const signIn = async (
 
   const { email, password } = req.body
 
-  const result = await UsersProvider.getByEmail(email)
+  const user = await UsersProvider.getByEmail(email)
 
-  if (result instanceof Error) {
+  if (user instanceof Error) {
     res.status(StatusCodes.UNAUTHORIZED).json({
       errors: {
         default: 'Email ou senha são inválidos',
@@ -36,7 +37,7 @@ export const signIn = async (
 
   const passwordMatch = await PasswordCrypto.verifyPassword(
     password,
-    result.password,
+    user.password,
   )
   if (!passwordMatch) {
     res.status(StatusCodes.UNAUTHORIZED).json({
@@ -47,5 +48,15 @@ export const signIn = async (
     return
   }
 
-  res.status(StatusCodes.OK).json({ accessToken: 'teste.teste.teste' })
+  const accessToken = JWTService.sign({ uid: user.id })
+
+  if (accessToken === 'JWT_SECRET_NOT_FOUND') {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: {
+        default: 'Erro ao gerar token de acesso',
+      },
+    })
+    return
+  }
+  res.status(StatusCodes.OK).json({ accessToken })
 }
